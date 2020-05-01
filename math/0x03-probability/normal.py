@@ -1,69 +1,43 @@
 #!/usr/bin/env python3
-"""
-Create a class Normal that represents a normal distribution
-"""
-import numpy as np
+"""Contains the Normal class"""
 
 
 class Normal:
-    """
-    Class Normal that represents a normal distribution
-    """
+    """Normal class"""
+
     def __init__(self, data=None, mean=0., stddev=1.):
-        """
-        Class constructor  
-        """
+        """constructor"""
         if data is not None:
             if not isinstance(data, list):
                 raise TypeError("data must be a list")
-            if len(data) < 2:
+            if len(data) <= 2:
                 raise ValueError("data must contain multiple values")
-            self.mean = sum(data) / len(data)
-            self.stddev = 0
-            for i in range(len(data)-1):
-                self.stddev += (np.power((data[i] - self.mean), 2)) / len(data)
-            self.stddev = np.sqrt(self.stddev)
+            self.mean = float(sum(data) / len(data))
+            my_list = [(x - self.mean) ** 2 for x in data]
+            self.stddev = (sum(my_list) / len(data)) ** 0.5
         else:
-            if stddev < 0:
+            if stddev <= 0:
                 raise ValueError("stddev must be a positive value")
             self.stddev = float(stddev)
             self.mean = float(mean)
 
     def z_score(self, x):
-        """
-        Calculates the z-score of a given x-value
-        Returns: z-score of x
-        """
-        z_score = (x - self.mean) / self.stddev
-        return z_score
+        """Calculates the z-score of a given x-value"""
+        return (x - self.mean) / self.stddev
 
     def x_value(self, z):
-        """
-        Calculates the x-value of a given z-score
-        Returns: x-value of z
-        """
-        x_value = z * self.stddev + self.mean
-        return x_value
-        
+        """x-value of a given z-score"""
+        return z * self.stddev + self.mean
 
     def pdf(self, x):
-        """
-        Calculates the value of the PDF for a given x-value
-        Returns: the PDF value for x
-        """
-        π = 3.1415926536
-        e = 2.7182818285
-        power_for_e = np.power(-(x-self.mean), 2) / (2*np.power(self.stddev,2))
-        e_to_power = np.power(e, power_for_e)
-        pdf = 1/(self.stddev*(np.sqrt(2*π)) * e_to_power)
-        return pdf
+        """value of the PDF for a given x-value"""
+        return 1 / (self.stddev * (2 * 3.1415926536) ** 0.5) * \
+            2.7182818285 ** (- (x - self.mean)**2 / (2 * self.stddev**2))
 
     def cdf(self, x):
-        """
-        Calculates the value of the CDF for a given x-value
-        Returns cdf value
-        """
-        π = 3.1415926536
-        e = 2.7182818285
-        
-        return cdf
+        """value of the CDF for a given x-value"""
+        arg = (x - self.mean) / (self.stddev * 2 ** 0.5)
+        erf = (2 / 3.1415926536 ** 0.5) * \
+              (arg - (arg ** 3) / 3 + (arg ** 5) / 10 -
+               (arg ** 7) / 42 + (arg ** 9) / 216)
+        return (1/2) * (1 + erf)

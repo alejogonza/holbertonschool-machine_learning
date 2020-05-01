@@ -10,3 +10,14 @@ print('Lambtha:', p1.lambtha)
 
 p2 = Poisson(lambtha=5)
 print('Lambtha:', p2.lambtha)
+
+p3 = Poisson(lambtha=5)
+print('Lambtha:', p3.lambtha)
+
+data = [2]
+p4 = Poisson(data)
+print('Lambtha:', p4.lambtha)
+
+data = {'key': 'value'}
+p4 = Poisson(data)
+print('Lambtha:', p4.lambtha)
