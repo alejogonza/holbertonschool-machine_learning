@@ -65,19 +65,16 @@ class Neuron:
         A is a numpy.ndarray with shape (1, m)
         containing the activated output of the neuron for each example
         """
-        cost = -np.sum((Y * np.log(A)) +
-                       ((1 - Y) * np.log(1.0000001 - A))) / Y.shape[1]
-        return cost
+        first = np.matmul(Y, np.log(A).T)
+        print(first[0][0])
+        print(np.sum(Y * np.log(A)))
+        second = np.matmul((1.0000001 - Y), np.log(1.0000001 - A).T)
+        print(second[0][0])
+        print(np.sum((1.0000001 - Y) * np.log(1.0000001 - A)))
+        third = Y.shape[1]
+        print(third)
+        print((- (first - second) / third)[0][0])
 
-    def evaluate(self, X, Y):
-        """Evaluates the neuron’s predictions
-        X is a numpy.ndarray with shape (nx, m) that contains the input data
-        nx is the number of input features to the neuron
-        m is the number of examples
-        Y is a numpy.ndarray with shape (1, m)
-        that contains the correct labels for the input data
-        """
-        self.forward_prop(X)
-        A = np.where(self.__A >= 0.5, 1, 0)
-        cost = self.cost(Y, self.__A)
-        return A, cost
+        cost = -np.sum((Y * np.log(A)) +
+                       ((1.0000001 - Y) * np.log(1.0000001 - A))) / Y.shape[1]
+        return cost
