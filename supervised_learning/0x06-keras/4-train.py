@@ -1,30 +1,35 @@
 #!/usr/bin/env python3
-"""Contains the train_model function"""
-
+"""
+Train
+"""
 import tensorflow.keras as K
 
 
-def train_model(network, data, labels, batch_size, epochs,
-                verbose=True, shuffle=False):
-    """
-    trains a model using mini-batch gradient descent
-    :param network: model to train
-    :param data: numpy.ndarray of shape (m, nx) containing the input data
-    :param labels: one-hot numpy.ndarray of shape (m, classes)
-        containing the labels of data
-    :param batch_size: size of the batch used for mini-batch grad desc
-    :param epochs: number of passes through data for mini-batch grad desc
-    :param verbose: boolean that determines if output should be
-        printed during training
-    :param shuffle: boolean that determines whether
-        to shuffle the batches every epoch
-    :return: History object generated after training the model
-    """
-    history = network.fit(data,
-                          labels,
-                          batch_size=batch_size,
-                          epochs=epochs,
-                          verbose=verbose,
-                          shuffle=shuffle)
+def train_model(network, data, labels, batch_size, epochs, verbose=True,
+                shuffle=False):
+    """Trains a model using mini-batch gradient descent.
 
-    return history
+    Args:
+        network (keras model): model to train.
+        data (np.ndarray): matrix of shape (m, nx) containing the input data.
+        labels (np.ndarray): one hot matrix of shape (m, classes) containing
+                             the labels of data.
+        batch_size (int): size of the batch used for mini-batch gradient
+                          descent.
+        epochs (int): number of passes through data for mini-batch gradient
+                      descent.
+        verbose (bool): determines if output should be printed during training.
+        shuffle (bool): determines whether to shuffle the batches every epoch.
+        Normally, it is a good idea to shuffle, but for reproducibility, we
+        have chosen to set the default to False.
+
+    Returns:
+        The History object generated after training the model.
+
+    """
+    return network.fit(x=data,
+                       y=labels,
+                       batch_size=batch_size,
+                       epochs=epochs,
+                       verbose=verbose,
+                       shuffle=shuffle)

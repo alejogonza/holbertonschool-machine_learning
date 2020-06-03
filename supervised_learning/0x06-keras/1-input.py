@@ -1,42 +1,36 @@
 #!/usr/bin/env python3
-"""Contains the build_model function"""
-
-import tensorflow.keras as keras
+"""
+Sequential
+"""
+import tensorflow.keras as K
 
 
 def build_model(nx, layers, activations, lambtha, keep_prob):
+    """Builds a neural network with the Keras library:
+
+    Args:
+        nx (int): number of input features to the network:
+        layers (list): list containing the number of nodes in each layer of
+                       the network.
+        activations (list): list containing the activation functions used
+                            for each layer of the network
+        lambtha (float): L2 regularization parameter
+        keep_prob (float): probability that a node will be kept for dropout
+
+    Returns:
+        the keras model
     """
-    builds a neural network with the Keras library
-    :param nx: number of input features to the network
-    :param layers: list containing the number of nodes
-        in each layer of the network
-    :param activations: list containing the activation
-        functions used for each layer of the network
-    :param lambtha: L2 regularization parameter
-    :param keep_prob: probability that a node will be kept for dropout
-    :return: keras model
-    """
-    # input placeholder
-    inputs = keras.Input(shape=(nx,))
+    X_input = K.layers.Input(shape=(nx,))
 
-    # regularization scheme
-    reg = keras.regularizers.L1L2(l2=lambtha)
+    X = K.layers.Dense(layers[0],
+                       activation=activations[0],
+                       kernel_regularizer=K.regularizers.l2(lambtha))(X_input)
 
-    # a layer instance is callable on a tensor, and returns a tensor.
-    # first densely-connected layer
-    my_layer = keras.layers.Dense(units=layers[0],
-                                  activation=activations[0],
-                                  kernel_regularizer=reg,
-                                  input_shape=(nx,))(inputs)
+    for nodes, act in zip(layers[1::], activations[1::]):
+        X = K.layers.Dropout(1 - keep_prob)(X)
+        X = K.layers.Dense(nodes,
+                           activation=act,
+                           kernel_regularizer=K.regularizers.l2(lambtha))(X)
 
-    # subsequent densely-connected layers:
-    for i in range(1, len(layers)):
-        my_layer = keras.layers.Dropout(1 - keep_prob)(my_layer)
-        my_layer = keras.layers.Dense(units=layers[i],
-                                      activation=activations[i],
-                                      kernel_regularizer=reg,
-                                      )(my_layer)
-
-    network = keras.Model(inputs=inputs, outputs=my_layer)
-
-    return network
+    model = K.Model(inputs=X_input, outputs=X)
+    return model

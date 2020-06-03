@@ -1,18 +1,22 @@
 #!/usr/bin/env python3
-"""Contains the test_model function"""
-
+"""
+Test
+"""
 import tensorflow.keras as K
 
 
 def test_model(network, data, labels, verbose=True):
     """
-    tests a neural network
-    :param network:network model to test
-    :param data: input data to test the model with
-    :param labels: correct one-hot labels of data
-    :param verbose: boolean that determines if output should
-        be printed during the testing process
-    :return: loss and accuracy of the model with the testing data, respectively
+
+    Args:
+        network (Keras model): the network model to test.
+        data (np.ndarray): input data to test the model with.
+        labels (np.ndarray): correct one-hot labels of data.
+        verbose (bool): determines if output should be printed during the
+                        testing process.
+
+    Returns:
+        float: the loss and accuracy of the model with the testing data,
+               respectively
     """
-    test = network.evaluate(data, labels, verbose=verbose)
-    return test
+    return network.evaluate(data, labels, verbose=verbose)

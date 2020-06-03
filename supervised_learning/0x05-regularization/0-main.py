@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import numpy as np
-
 l2_reg_cost = __import__('0-l2_reg_cost').l2_reg_cost
 
 if __name__ == '__main__':

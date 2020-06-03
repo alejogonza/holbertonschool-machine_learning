@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
-"""Contains the one_hot function"""
-
-import tensorflow.keras as keras
+"""
+One hot matrix
+"""
+import tensorflow.keras as K
 
 
 def one_hot(labels, classes=None):
+    """Converts a label vector into a one-hot matrix.
+
+    Args:
+        labels (np.ndarray): the label vector (1, classes).
+        classes: number of classes.
+
+    Returns:
+        the one-hot matrix.
     """
-    converts a label vector into a one-hot matrix
-    :param labels:
-    :param classes:
-    :return: the one-hot matrix
-    """
-    return keras.utils.to_categorical(
-        labels, classes)
+    return K.utils.to_categorical(labels, classes)
